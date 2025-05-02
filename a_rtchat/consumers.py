@@ -19,7 +19,6 @@ class ChatConsumer(WebsocketConsumer):
         # if self.user not in self.chatroom.users_online.all():
         #     self.chatroom.users_online.add(self.user)
         #     self.update_online_count()
-        print("===================connect===================")
         
         
         self.accept()
@@ -29,7 +28,6 @@ class ChatConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_discard)(
             self.chatroom_name, self.channel_name
         )
-        print("===================disconnect===================")
         
         # remove and update online users
         # if self.user in self.chatroom.users_online.all():
@@ -50,7 +48,6 @@ class ChatConsumer(WebsocketConsumer):
             'message_id': message.id,
         }
         
-        print("===================received===================")
         async_to_sync(self.channel_layer.group_send)(
             self.chatroom_name, event
         )
@@ -66,7 +63,6 @@ class ChatConsumer(WebsocketConsumer):
             'chat_group': self.chatroom,
             'is_author': is_author,
         }
-        print("===================handler===================")
         
         html = render_to_string("a_rtchat/partials/chat_message_p.html", context=context)
         self.send(text_data=html)
